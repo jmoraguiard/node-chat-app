@@ -15,8 +15,18 @@ var app = express();
 // create a server using the express app
 var server = http.createServer(app);
 
+var io = socketIO(server);
+
 // Make it serve by default public directory
 app.use(express.static(publicPath));
+
+io.on('connection', (socket) => {
+  console.log('New user connected');
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected.');
+  });
+});
 
 // Configure it to listen to port 3000
 server.listen(port, () => {
